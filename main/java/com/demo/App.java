@@ -3,34 +3,40 @@ package com.demo;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 
 public class App 
 {
+	
     public static void main( String[] args )
     {
         System.out.println( "Welcome To Employee PayRoll Service" );
-        String jdbcURL = "jdbc:mysql://localhost:3306/payroll_service";
-        String username = "root";
-        String password = "root"; 
-
-        Connection connection = null;
+        EmployeePayRollService payrollService = new EmployeePayRollService();
 
         try {
-            connection = DriverManager.getConnection(jdbcURL, username, password);
-            System.out.println("Connected to the database successfully!");
-        } catch (SQLException e) {
-            System.out.println("Error occuring to connect db:");
-            e.printStackTrace();
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                    System.out.println("Connection closed.");
-                } catch (SQLException e) {
-                    System.out.println("Error occuring to close connection:");
-                    e.printStackTrace();
-                }
+            Connection connection = getConnection();
+
+            List<EmployeePayRoll> employeePayrollList = payrollService.getEmployeePayrollData(connection);
+
+            for (EmployeePayRoll employeePayroll : employeePayrollList) {
+                System.out.println(employeePayroll);
             }
+
+            if (connection != null) {
+                connection.close();
+                System.out.println("Connection closed.");
+            }
+
+        } catch (EmployeePayRollException | SQLException e) {
+            System.out.println("Error occurred: " + e.getMessage());
+            e.printStackTrace();
         }
+    }
+    
+    private static Connection getConnection() throws SQLException {
+        String jdbcURL = "jdbc:mysql://localhost:3306/payroll_service";
+        String username = "root";
+        String password = "root";
+        return DriverManager.getConnection(jdbcURL, username, password);
     }
 }
