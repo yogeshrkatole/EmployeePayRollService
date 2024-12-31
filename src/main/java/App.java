@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public class App {
 
@@ -14,9 +15,10 @@ public class App {
 
         try {
             Connection connection = getConnection();
-            
-            //select employee data
             EmployeePayRollService payrollService = new EmployeePayRollService();
+            //create table
+            payrollService.createEmployeePayrollTable(connection);
+            //select employee data
             List<EmployeePayRoll> employeePayrollList = payrollService.getEmployeePayrollData(connection);
             
             System.out.println("---------Employee Payroll Data:--------");
@@ -44,6 +46,12 @@ public class App {
             for (EmployeePayRoll employee : employees) {
                 System.out.println(employee);
             }
+            
+            //print by male and female
+            Map<String, Object> analysisResults = payrollService.getGenderBasedSalaryAnalysis(connection);
+
+            analysisResults.forEach((key, value) -> 
+                System.out.println(key + ": " + value));
 
             if (connection != null) {
                 connection.close();

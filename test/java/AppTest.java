@@ -39,7 +39,7 @@ public class AppTest {
 		try {
 			String employeeName = "Employee 10";
 			EmployeePayRoll expectedEmployee = new EmployeePayRoll(10, "Employee 10", 3000000.0, 1400.0, 7100.0,
-					1400.0, 5700.0, "5555550010", "Address 10", "Department J", LocalDate.of(2024,01,10));
+					1400.0, 5700.0, "5555550010", "Address 10", "Department J", LocalDate.of(2024,01,10),"F");
 
 			EmployeePayRoll actualEmployee = payrollService.getEmployeeByName(connection, employeeName);
 			System.out.println(actualEmployee);

@@ -14,11 +14,12 @@ public class EmployeePayRoll {
     private String address;
     private String department;
     private LocalDate startDate;
+    private String gender;
 
     public EmployeePayRoll() {}
 
     public EmployeePayRoll(int employeeId, String employeeName, double salary, double deductions, double taxablePay,
-                           double incomeTax, double netPay, String phone, String address, String department, LocalDate startDate) {
+                           double incomeTax, double netPay, String phone, String address, String department, LocalDate startDate,String gender) {
         this.employeeId = employeeId;
         this.employeeName = employeeName;
         this.salary = salary;
@@ -30,6 +31,7 @@ public class EmployeePayRoll {
         this.address = address;
         this.department = department;
         this.startDate = startDate;
+        this.gender = gender;
     }
 
     public int getEmployeeId() {
@@ -120,6 +122,14 @@ public class EmployeePayRoll {
         this.startDate = startDate;
     }
 
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+    
     @Override
     public String toString() {
         return "EmployeePayRoll [employeeId=" + employeeId + ", employeeName=" + employeeName + ", salary=" + salary
@@ -143,7 +153,8 @@ public class EmployeePayRoll {
                 phone.equals(that.phone) &&
                 address.equals(that.address) &&
                 department.equals(that.department) &&
-                startDate.equals(that.startDate);
+                startDate.equals(that.startDate) &&
+                gender.equals(that.gender);
     }
 
 
