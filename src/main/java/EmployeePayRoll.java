@@ -127,4 +127,24 @@ public class EmployeePayRoll {
                 + ", netPay=" + netPay + ", phone=" + phone + ", address=" + address + ", department=" + department
                 + ", startDate=" + startDate + "]";
     }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EmployeePayRoll that = (EmployeePayRoll) o;
+        return employeeId == that.employeeId &&
+                Double.compare(that.salary, salary) == 0 &&
+                Double.compare(that.deductions, deductions) == 0 &&
+                Double.compare(that.taxablePay, taxablePay) == 0 &&
+                Double.compare(that.incomeTax, incomeTax) == 0 &&
+                Double.compare(that.netPay, netPay) == 0 &&
+                employeeName.equals(that.employeeName) &&
+                phone.equals(that.phone) &&
+                address.equals(that.address) &&
+                department.equals(that.department) &&
+                startDate.equals(that.startDate);
+    }
+
+
 }
