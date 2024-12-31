@@ -89,4 +89,37 @@ public class EmployeePayRollService {
             throw new EmployeePayRollException("Error while retrieving employee data: " + e.getMessage());
         }
     }
+    
+    public List<EmployeePayRoll> getEmployeesByDateRange(Connection connection, LocalDate startDate, LocalDate endDate) throws EmployeePayRollException {
+        List<EmployeePayRoll> employeePayrollList = new ArrayList<>();
+        String query = "SELECT * FROM employee_payroll WHERE start_date BETWEEN ? AND ?";
+        
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setDate(1, java.sql.Date.valueOf(startDate));
+            statement.setDate(2, java.sql.Date.valueOf(endDate));
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                int employeeId = resultSet.getInt("employee_id");
+                String employeeName = resultSet.getString("employee_name");
+                double salary = resultSet.getDouble("salary");
+                double deductions = resultSet.getDouble("deductions");
+                double taxablePay = resultSet.getDouble("taxable_pay");
+                double incomeTax = resultSet.getDouble("income_tax");
+                double netPay = resultSet.getDouble("net_pay");
+                String phone = resultSet.getString("phone");
+                String address = resultSet.getString("address");
+                String department = resultSet.getString("department_name");
+                LocalDate start = resultSet.getDate("start_date").toLocalDate();
+
+                EmployeePayRoll employee = new EmployeePayRoll(employeeId, employeeName, salary, deductions, taxablePay, incomeTax, netPay, phone, address, department, start);
+                employeePayrollList.add(employee);
+            }
+
+        } catch (SQLException e) {
+            throw new EmployeePayRollException("Error while retrieving employees by date range: " + e.getMessage());
+        }
+        return employeePayrollList;
+    }
+
 }

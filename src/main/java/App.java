@@ -3,6 +3,7 @@ package main.java;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 public class App {
@@ -13,14 +14,17 @@ public class App {
 
         try {
             Connection connection = getConnection();
+            
+            //select employee data
             EmployeePayRollService payrollService = new EmployeePayRollService();
             List<EmployeePayRoll> employeePayrollList = payrollService.getEmployeePayrollData(connection);
             
-            System.out.println("Employee Payroll Data:");
+            System.out.println("---------Employee Payroll Data:--------");
             for (EmployeePayRoll employeePayroll : employeePayrollList) {
                 System.out.println(employeePayroll);
             }
 
+            //update employee data
             String employeeName = "Employee 10";
             double updateSalary = 3000000.00;
             int rowsUpdated = payrollService.updateEmployeeSalary(connection, employeeName, updateSalary);
@@ -30,6 +34,16 @@ public class App {
                 System.out.println("No employee found with the name " + employeeName);
             }
             
+            //select data by joined date range
+            LocalDate startDate = LocalDate.of(2024, 1, 1);
+            LocalDate endDate = LocalDate.of(2024, 01, 29);
+
+            List<EmployeePayRoll> employees = payrollService.getEmployeesByDateRange(connection, startDate, endDate);
+
+            System.out.println("------------Employees who joined between " + startDate + " and " + endDate + ":------");
+            for (EmployeePayRoll employee : employees) {
+                System.out.println(employee);
+            }
 
             if (connection != null) {
                 connection.close();
